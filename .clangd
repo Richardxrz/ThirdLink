@@ -1,0 +1,5 @@
+CompileFlags:
+  CompilationDatabase: E:/code/c++/ThirdLink/build/clang-debug
+  Add:
+    - "--target=x86_64-w64-windows-gnu"
+    - "--gcc-toolchain=E:/Msys/mingw64"

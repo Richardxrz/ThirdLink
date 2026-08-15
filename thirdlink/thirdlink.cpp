@@ -30,7 +30,7 @@ using Arm = std::vector<JointLinkPair>;
 void DrawJointLinkPair(const JointLinkPair &jlpair);
 void DrawArm(const Arm &arm);
 void PrintInfo(void);
-void InitJointLinkPairs(Arm &arm);
+void InitArm(Arm &arm);
 inline void PrintInitJointLinkPairInfo(const JointLinkPair jlpairs[]);
 
 JointLinkPair jlpair1, jlpair2, jlpair3;
@@ -38,7 +38,7 @@ Arm arm{jlpair1, jlpair2, jlpair3};
 
 int main() {
   // Init links and joints
-  InitJointLinkPairs(arm);
+  InitArm(arm);
   PrintInfo();
 
   // Init window
@@ -99,7 +99,7 @@ void DrawArm(const Arm &arm) {
 /*------------------------- Assignment -------------------------*/
 
 // Assignment JointLinkPair
-void InitJointLinkPairs(Arm &arm) {
+void InitArm(Arm &arm) {
   // Set initial values
   Vector2 origin = BUTTON_MID;
   float length = 100.0f;

@@ -27,16 +27,17 @@ struct Link {
 
 using Arm = std::vector<Link>;
 
-void DrawJointLinkPair(const Link &link);
 void DrawArm(const Arm &arm);
 void InitArm(Arm &arm);
 void PrintInitInfo(const Arm &arm);
 
-Link link1, link2, link3;
-Arm arm{link1, link2, link3};
-
 int main() {
-  // Init links and joints
+  // Init arm
+  Arm arm{
+      Link{{}, 100.0f, std::numbers::pi_v<float> / 5.0f},        // 连杆 0
+      Link{{}, 100.0f, std::numbers::pi_v<float> * 4.0f / 5.0f}, // 连杆 1
+      Link{{}, 45.0f, std::numbers::pi_v<float>},                // 连杆 2
+  };
   InitArm(arm);
   PrintInitInfo(arm);
 
@@ -62,13 +63,11 @@ int main() {
 /*------------------------- Print Info ------------------------*/
 
 void PrintInitInfo(const Arm &arm) {
-  for (int i = 0; i < arm.size(); i++) {
-    std::cout << "arm[ " << i << " ].origin.x: " << arm[i].origin.x
-              << std::endl;
-    std::cout << "arm[ " << i << " ].origin.y: " << arm[i].origin.y
-              << std::endl;
-    std::cout << "arm[ " << i << " ].length: " << arm[i].length << std::endl;
-    std::cout << "arm[ " << i << " ].angle: " << arm[i].angle << std::endl;
+  for (auto &link : arm) {
+    std::cout << "link.origin.x: " << link.origin.x << std::endl;
+    std::cout << "link.origin.y: " << link.origin.y << std::endl;
+    std::cout << "link.length: " << link.length << std::endl;
+    std::cout << "link.angle: " << link.angle << std::endl;
   }
 }
 
@@ -95,14 +94,8 @@ void InitArm(Arm &arm) {
   // Set initial values
   Vector2 origin = SCREEN_MID;
   // assignment
-  arm[0].length = 100.0f;
-  arm[1].length = 100.0f;
-  arm[2].length = 45.0f;
-  arm[0].angle = std::numbers::pi / 5;
-  arm[1].angle = std::numbers::pi / 5 * 4;
-  arm[2].angle = std::numbers::pi;
-  for (int i = 0; i < arm.size(); i++) {
-    arm[i].origin = origin;
-    origin = arm[i].end();
+  for (auto &link : arm) {
+    link.origin = origin;
+    origin = link.end();
   }
 }

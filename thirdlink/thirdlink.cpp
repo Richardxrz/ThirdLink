@@ -12,33 +12,33 @@ constexpr Color JOINT_COLOR{RED};
 constexpr Color LINK_COLOR{WHITE};
 constexpr float LINK_THICK{5.0f};
 constexpr Vector2 BUTTON_MID{400.0f, 600.0f};
+constexpr Vector2 SCREEN_MID{400.0f, 300.0f};
 
-struct JointLinkPair {
+struct Link {
   Vector2 origin{};
   float length{};
-  float phi{};
+  float angle{};
 
   Vector2 end() const {
-    return {origin.x + length * std::cos(phi),
-            origin.y - length * std::sin(phi)};
+    return {origin.x + length * std::cos(angle),
+            origin.y - length * std::sin(angle)};
   }
 };
 
-using Arm = std::vector<JointLinkPair>;
+using Arm = std::vector<Link>;
 
-void DrawJointLinkPair(const JointLinkPair &jlpair);
+void DrawJointLinkPair(const Link &link);
 void DrawArm(const Arm &arm);
-void PrintInfo(void);
 void InitArm(Arm &arm);
-inline void PrintInitJointLinkPairInfo(const JointLinkPair jlpairs[]);
+void PrintInitInfo(const Arm &arm);
 
-JointLinkPair jlpair1, jlpair2, jlpair3;
-Arm arm{jlpair1, jlpair2, jlpair3};
+Link link1, link2, link3;
+Arm arm{link1, link2, link3};
 
 int main() {
   // Init links and joints
   InitArm(arm);
-  PrintInfo();
+  PrintInitInfo(arm);
 
   // Init window
   InitWindow(WIDTH, HEIGHT, "ThirdLink Simulation");
@@ -59,39 +59,32 @@ int main() {
   return 0;
 }
 
-/*---------------------- Private Tool Function ------------------------*/
-
-namespace {
-void PrintInitJointLinkPairInfo(const Arm &arm, int i) {
-  std::cout << "arm[ " << i << " ].origin.x: " << arm[i].origin.x << std::endl;
-  std::cout << "arm[ " << i << " ].origin.y: " << arm[i].origin.y << std::endl;
-  std::cout << "arm[ " << i << " ].length: " << arm[i].length << std::endl;
-  std::cout << "arm[ " << i << " ].phi: " << arm[i].phi << std::endl;
-}
-} // namespace
-
 /*------------------------- Print Info ------------------------*/
 
-void PrintInfo(void) {
+void PrintInitInfo(const Arm &arm) {
   for (int i = 0; i < arm.size(); i++) {
-
-    PrintInitJointLinkPairInfo(arm, i);
+    std::cout << "arm[ " << i << " ].origin.x: " << arm[i].origin.x
+              << std::endl;
+    std::cout << "arm[ " << i << " ].origin.y: " << arm[i].origin.y
+              << std::endl;
+    std::cout << "arm[ " << i << " ].length: " << arm[i].length << std::endl;
+    std::cout << "arm[ " << i << " ].angle: " << arm[i].angle << std::endl;
   }
 }
 
 /*-------------------------- Draw -----------------------------*/
 
 // Draw a pair of joint and link
-void DrawJointLinkPair(const JointLinkPair &jlpair) {
-  DrawLineEx(jlpair.origin, jlpair.end(), LINK_THICK, LINK_COLOR);
-  Vector2 origin = jlpair.origin;
+void DrawLink(const Link &link) {
+  DrawLineEx(link.origin, link.end(), LINK_THICK, LINK_COLOR);
+  Vector2 origin = link.origin;
   DrawCircleV(origin, RADIUS, JOINT_COLOR);
 }
 
 // Draw thriarms refferred to Joint0 origin
 void DrawArm(const Arm &arm) {
   for (int i = 0; i < arm.size(); i++) {
-    DrawJointLinkPair(arm[i]);
+    DrawLink(arm[i]);
   }
 }
 
@@ -100,12 +93,16 @@ void DrawArm(const Arm &arm) {
 // Assignment JointLinkPair
 void InitArm(Arm &arm) {
   // Set initial values
-  Vector2 origin = BUTTON_MID;
-  float length = 100.0f;
-  float phi = std::numbers::pi / 2;
+  Vector2 origin = SCREEN_MID;
   // assignment
+  arm[0].length = 100.0f;
+  arm[1].length = 100.0f;
+  arm[2].length = 45.0f;
+  arm[0].angle = std::numbers::pi / 5;
+  arm[1].angle = std::numbers::pi / 5 * 4;
+  arm[2].angle = std::numbers::pi;
   for (int i = 0; i < arm.size(); i++) {
-    arm[i] = {.origin = origin, .length = length, .phi = phi};
+    arm[i].origin = origin;
     origin = arm[i].end();
   }
 }

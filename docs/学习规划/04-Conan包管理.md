@@ -227,3 +227,20 @@ Linux/macOS 上直接用 clang，没有任何这些麻烦。
    否则两个 CMakePresets.json 里的 conan-debug 预设重名冲突；
 5. compile_commands.json：在 CMakeLists.txt 里 set(CMAKE_EXPORT_COMPILE_COMMANDS ON) 最省事；
 6. .clangd 的 CompilationDatabase 要指向 conan 的构建目录（build/Debug）。
+
+
+## Preset 文件体系：CMakePresets.json vs CMakeUserPresets.json
+
+| | CMakePresets.json | CMakeUserPresets.json |
+|---|---|---|
+| 谁写 | 你手写（项目级） | Conan 自动生成（用户级） |
+| 提交 git？ | 提交（团队共享） | 不提交（含绝对路径，机器特定） |
+| 内容 | 项目级构建配置 | conan-debug / conan-release 预设 |
+| 谁读 | 协作者 + CI | 只有你 |
+
+- conan-debug/conan-release 不用手写，conan install 每次自动重新生成；
+- CMakePresets.json 仍要维护（可以很薄），它是项目级公开声明；
+- CMakeUserPresets.json 应加入 .gitignore（含绝对路径 binaryDir）；
+- 链条：conan install（生成 user preset）→ cmake --preset conan-debug（读取）→ 插件 :CMakeBuild 执行；
+- preset 是配置快照，插件是命令封装，两者是「生成配置」和「执行命令」的关系。
+

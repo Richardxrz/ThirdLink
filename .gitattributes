@@ -1,0 +1,31 @@
+# 换行符策略：文本文件提交时统一为 LF，检出时按平台转换
+* text=auto
+
+# shell 脚本/构建脚本必须 LF（Linux 上 CRLF 会导致报错）
+*.sh text eol=lf
+Makefile text eol=lf
+*.mk text eol=lf
+
+# CMake / YAML 等配置统一 LF
+CMakeLists.txt text eol=lf
+*.cmake text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# 文本类源代码按平台自动处理
+*.cpp text
+*.h text
+*.hpp text
+*.c text
+*.md text
+*.json text
+
+# 二进制文件（git 不碰换行符、不做 diff 文本化）
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.exe binary
+*.dll binary
+*.a binary
+*.lib binary
+*.obj binary

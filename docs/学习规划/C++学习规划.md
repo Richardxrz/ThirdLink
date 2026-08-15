@@ -144,8 +144,9 @@
 - [x] CMakePresets 修复（Libr 拼写）—— 已完成；
 - [x] README（含一键构建说明）—— 已完成；git 仓库已存在；
 - [x] GitHub Actions 三平台矩阵（windows/linux/macos）—— CI 文件已写好（.github/workflows/ci.yml），推送 GitHub 后生效；
-- [x] 编译 0 警告门禁（-Wall -Wextra -Wpedantic）—— 你已自己加入 CMake，验证 0 警告通过。
-- [ ] 把项目推送到 GitHub 并确认 CI 三平台全绿 —— 待做（需要建仓库 + push）。
+- [x] 编译 0 警告门禁（-Wall -Wextra -Wpedantic）—— 你已自己加入 CMake，验证 0 警告通过；
+- [x] Release 构建验证（conan-release 跑通，产物 1.7 MB）+ .gitignore 完善（CMakeUserPresets.json、*.log）。
+- [ ] 把项目推送到 GitHub 并确认 CI 三平台全绿 —— 只剩这一步，全是你自己的操作（建仓库 + commit + push）。
 
 **验收**：按 README 能在三个平台一键构建；编译 0 警告。
 

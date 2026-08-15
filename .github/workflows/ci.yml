@@ -32,7 +32,9 @@ jobs:
         run: conan profile detect --force
 
       - name: Install dependencies
-        run: conan install . --build=missing -s build_type=Debug
+        # -c ...generator=Ninja：强制单配置 generator，三平台统一生成 conan-debug preset
+        # （否则 Windows 默认 Visual Studio 多配置 → 生成 conan-default，preset 名不一致）
+        run: conan install . --build=missing -s build_type=Debug -c tools.cmake.cmaketoolchain:generator=Ninja
 
       - name: Configure
         run: cmake --preset conan-debug

@@ -4,14 +4,13 @@
 #include <numbers>
 #include <vector>
 
-#define BGCOLOR BLACK
-#define WIDTH 800
-#define HEIGHT 600
-#define RADIUS 5.0f
-#define JOINT_COLOR RED
-#define LINK_COLOR WHITE
-#define LINK_THICK 5.0f
-
+constexpr Color BGCOLOR{BLACK};
+constexpr int WIDTH{800};
+constexpr int HEIGHT{600};
+constexpr float RADIUS{5.0f};
+constexpr Color JOINT_COLOR{RED};
+constexpr Color LINK_COLOR{WHITE};
+constexpr float LINK_THICK{5.0f};
 constexpr Vector2 BUTTON_MID{400.0f, 600.0f};
 
 struct JointLinkPair {

@@ -3,16 +3,22 @@ cmake_minimum_required(VERSION 3.21)
 project(thirdlink VERSION 1.0
                   LANGUAGES CXX)
 
-set(RAYLIB_ROOT "E:/Lib/raylib-6.0_win64_mingw-w64/raylib-6.0_win64_mingw-w64/")
-set(RAYLIB_INC ${RAYLIB_ROOT}/include)
-set(RAYLIB_LIB ${RAYLIB_ROOT}/lib/libraylib.a)
+# 生成 compile_commands.json（clangd 用）
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# 依赖由 Conan 管理：先 conan install，再 find_package
+find_package(raylib CONFIG REQUIRED)
 
 add_subdirectory(thirdlink)
 
-target_include_directories(thirdlink PRIVATE ${RAYLIB_INC})
 target_link_libraries(thirdlink
   PRIVATE
-    ${RAYLIB_LIB}
-    winmm
+    raylib   # Conan CMakeDeps 生成的 target 名（不带 ::）
 )
 target_compile_features(thirdlink PRIVATE cxx_std_20)
+
+if (MSVC)
+  target_compile_options(thirdlink PRIVATE /W4)
+else()
+  target_compile_options(thirdlink PRIVATE -Wall -Wextra -Wpedantic)
+endif()

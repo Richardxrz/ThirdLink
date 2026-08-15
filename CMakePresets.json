@@ -24,7 +24,7 @@
       "generator": "Ninja",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "RAYLIB_ROOT": "E:/Libr/aylib-6.0_win64_mingw-w64/raylib-6.0_win64_mingw-w64",
+        "RAYLIB_ROOT": "E:/Lib/raylib-6.0_win64_mingw-w64/raylib-6.0_win64_mingw-w64",
         "CMAKE_CXX_COMPILER": "E:/Msys/mingw64/bin/g++.exe",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
@@ -39,7 +39,7 @@
       "cacheVariables": {
         "CMAKE_CXX_COMPILER": "E:/Msys/mingw64/bin/clang++.exe",
         "CMAKE_BUILD_TYPE": "Debug",
-        "RAYLIB_ROOT": "E:/Libr/aylib-6.0_win64_mingw-w64/raylib-6.0_win64_mingw-w64",
+        "RAYLIB_ROOT": "E:/Lib/raylib-6.0_win64_mingw-w64/raylib-6.0_win64_mingw-w64",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
     },
@@ -53,7 +53,7 @@
       "cacheVariables": {
         "CMAKE_CXX_COMPILER": "E:/Msys/mingw64/bin/clang++.exe",
         "CMAKE_BUILD_TYPE": "Release",
-        "RAYLIB_ROOT": "E:/Libr/aylib-6.0_win64_mingw-w64/raylib-6.0_win64_mingw-w64",
+        "RAYLIB_ROOT": "E:/Lib/raylib-6.0_win64_mingw-w64/raylib-6.0_win64_mingw-w64",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
     }

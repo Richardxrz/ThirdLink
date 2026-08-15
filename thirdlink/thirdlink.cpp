@@ -33,11 +33,9 @@ void PrintInitInfo(const Arm &arm);
 
 int main() {
   // Init arm
-  Arm arm{
-      Link{{}, 100.0f, std::numbers::pi_v<float> / 5.0f},        // 连杆 0
-      Link{{}, 100.0f, std::numbers::pi_v<float> * 4.0f / 5.0f}, // 连杆 1
-      Link{{}, 45.0f, std::numbers::pi_v<float>},                // 连杆 2
-  };
+  Arm arm{Link{{}, 100.0f, std::numbers::pi_v<float> / 5.0f},
+          Link{{}, 100.0f, std::numbers::pi_v<float> * 4.0f / 5.0f},
+          Link{{}, 45.0f, std::numbers::pi_v<float>}};
   InitArm(arm);
   PrintInitInfo(arm);
 
@@ -82,8 +80,8 @@ void DrawLink(const Link &link) {
 
 // Draw thriarms refferred to Joint0 origin
 void DrawArm(const Arm &arm) {
-  for (int i = 0; i < arm.size(); i++) {
-    DrawLink(arm[i]);
+  for (const Link &link : arm) {
+    DrawLink(link);
   }
 }
 

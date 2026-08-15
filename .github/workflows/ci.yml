@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Linux system deps (raylib/glfw 编译需要 X11)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+
+      - name: Set up Python (conan 需要)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Conan
+        run: pip install conan
+
+      - name: Detect default profile
+        # Windows→MSVC，Linux→gcc，macOS→Apple Clang，各平台自动检测
+        run: conan profile detect --force
+
+      - name: Install dependencies
+        run: conan install . --build=missing -s build_type=Debug
+
+      - name: Configure
+        run: cmake --preset conan-debug
+
+      - name: Build
+        run: cmake --build --preset conan-debug
+
+      - name: Verify binary
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            test -f build/Debug/thirdlink/thirdlink.exe
+          else
+            test -f build/Debug/thirdlink/thirdlink
+          fi

@@ -15,23 +15,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Linux system deps (raylib/glfw 编译需要 X11)
+      # Linux 图形开发库：用 YAML folded（>）折叠成单行，避免 \ 续行符带空格的坑
+      - name: Install Linux system deps
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y \
-          libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev \
-          libxkbcommon-dev libxxf86vm-dev libgl1-mesa-dev \
-          libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev \
-          libxaw7-dev libxcomposite-dev libxdamage-dev libxkbfile-dev \
-          libxmu-dev libxmuu-dev libxpm-dev libxres-dev libxss-dev libxt-dev \
-          libxtst-dev libxv-dev libxcb-glx0-dev libxcb-render0-dev \
-          libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev \
-          libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev \
-          libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev \
-          libxcb-xinerama0-dev libxcb-dri3-dev uuid-dev libxcb-cursor-dev \
-          libxcb-dri2-0-dev libxcb-present-dev libxcb-composite0-dev \
+        run: >
+          sudo apt-get update &&
+          sudo apt-get install -y
+          libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+          libxkbcommon-dev libxxf86vm-dev libgl1-mesa-dev
+          libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev
+          libxaw7-dev libxcomposite-dev libxdamage-dev libxkbfile-dev
+          libxmu-dev libxmuu-dev libxpm-dev libxres-dev libxss-dev libxt-dev
+          libxtst-dev libxv-dev libxcb-glx0-dev libxcb-render0-dev
+          libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev
+          libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev
+          libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev
+          libxcb-xinerama0-dev libxcb-dri3-dev uuid-dev libxcb-cursor-dev
+          libxcb-dri2-0-dev libxcb-present-dev libxcb-composite0-dev
           libxcb-ewmh-dev libxcb-res0-dev
 
-      - name: Set up Python (conan 需要)
+      # Windows：设置 MSVC 环境（cl 进 PATH），否则 Ninja 找不到 cl.exe
+      - name: Set up MSVC (Windows)
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -40,17 +48,12 @@ jobs:
         run: pip install conan
 
       - name: Detect default profile
-        # Windows→MSVC，Linux→gcc，macOS→Apple Clang，各平台自动检测
         run: conan profile detect --force
 
       - name: Install dependencies
-        # -c ...generator=Ninja：强制单配置 generator，三平台统一生成 conan-debug preset
-        # -c ...mode=disabled：系统包（X11/OpenGL）已在上面手动装好，让 conan 跳过检查/安装
-        # （mode=install 在 CI 里会因无 root 权限失败：/var/lib/apt/lists 锁不住）
         run: conan install . --build=missing -s build_type=Debug -c tools.cmake.cmaketoolchain:generator=Ninja -c tools.system.package_manager:mode=disabled
 
       - name: Configure
-        # conan install 已强制 Ninja（单配置）→ 三平台统一生成 conan-debug，无需平台分支
         run: cmake --preset conan-debug
 
       - name: Build

@@ -33,8 +33,9 @@ jobs:
 
       - name: Install dependencies
         # -c ...generator=Ninja：强制单配置 generator，三平台统一生成 conan-debug preset
-        # （否则 Windows 默认 Visual Studio 多配置 → 生成 conan-default，preset 名不一致）
-        run: conan install . --build=missing -s build_type=Debug -c tools.cmake.cmaketoolchain:generator=Ninja -c tools.system.package_manager:mode=install
+        # -c ...mode=disabled：系统包（X11/OpenGL）已在上面手动装好，让 conan 跳过检查/安装
+        # （mode=install 在 CI 里会因无 root 权限失败：/var/lib/apt/lists 锁不住）
+        run: conan install . --build=missing -s build_type=Debug -c tools.cmake.cmaketoolchain:generator=Ninja -c tools.system.package_manager:mode=disabled
 
       - name: Configure
         # conan install 已强制 Ninja（单配置）→ 三平台统一生成 conan-debug，无需平台分支

@@ -29,11 +29,8 @@ using Arm = std::vector<JointLinkPair>;
 
 void DrawJointLinkPair(const JointLinkPair &jlpair);
 void DrawArm(const Arm &arm);
-
 void PrintInfo(void);
-
 void InitJointLinkPairs(Arm &arm);
-
 inline void PrintInitJointLinkPairInfo(const JointLinkPair jlpairs[]);
 
 JointLinkPair jlpair1, jlpair2, jlpair3;
@@ -66,20 +63,12 @@ int main() {
 /*---------------------- Private Tool Function ------------------------*/
 
 namespace {
-Vector2 CalculateEndPos(Vector2 origin, float length, float phi) {
-  Vector2 end;
-  end = {.x = origin.x + length * std::cos(phi),
-         .y = origin.y - length * std::sin(phi)};
-  return end;
-}
-
 void PrintInitJointLinkPairInfo(const Arm &arm, int i) {
   std::cout << "arm[ " << i << " ].origin.x: " << arm[i].origin.x << std::endl;
   std::cout << "arm[ " << i << " ].origin.y: " << arm[i].origin.y << std::endl;
   std::cout << "arm[ " << i << " ].length: " << arm[i].length << std::endl;
   std::cout << "arm[ " << i << " ].phi: " << arm[i].phi << std::endl;
 }
-
 } // namespace
 
 /*------------------------- Print Info ------------------------*/
@@ -95,8 +84,7 @@ void PrintInfo(void) {
 
 // Draw a pair of joint and link
 void DrawJointLinkPair(const JointLinkPair &jlpair) {
-  Vector2 end = CalculateEndPos(jlpair.origin, jlpair.length, jlpair.phi);
-  DrawLineEx(jlpair.origin, end, LINK_THICK, LINK_COLOR);
+  DrawLineEx(jlpair.origin, jlpair.end(), LINK_THICK, LINK_COLOR);
   Vector2 origin = jlpair.origin;
   DrawCircleV(origin, RADIUS, JOINT_COLOR);
 }
@@ -119,6 +107,6 @@ void InitJointLinkPairs(Arm &arm) {
   // assignment
   for (int i = 0; i < arm.size(); i++) {
     arm[i] = {.origin = origin, .length = length, .phi = phi};
-    origin = CalculateEndPos(origin, length, phi);
+    origin = arm[i].end();
   }
 }

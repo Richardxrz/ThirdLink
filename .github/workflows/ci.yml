@@ -22,7 +22,7 @@ jobs:
       - name: Set up Python (conan 需要)
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install Conan
         run: pip install conan
@@ -37,6 +37,7 @@ jobs:
         run: conan install . --build=missing -s build_type=Debug -c tools.cmake.cmaketoolchain:generator=Ninja
 
       - name: Configure
+        # conan install 已强制 Ninja（单配置）→ 三平台统一生成 conan-debug，无需平台分支
         run: cmake --preset conan-debug
 
       - name: Build

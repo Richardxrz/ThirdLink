@@ -17,7 +17,7 @@ jobs:
 
       - name: Install Linux system deps (raylib/glfw 编译需要 X11)
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+        run: sudo apt-get update && sudo apt-get install -y libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxkbcommon-dev libxxf86vm-dev libgl1-mesa-dev
 
       - name: Set up Python (conan 需要)
         uses: actions/setup-python@v5

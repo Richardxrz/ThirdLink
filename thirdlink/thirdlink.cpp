@@ -4,15 +4,14 @@
 #include <numbers>
 #include <vector>
 
-constexpr Color BGCOLOR{BLACK};
-constexpr int WIDTH{800};
-constexpr int HEIGHT{600};
-constexpr float RADIUS{5.0f};
-constexpr Color JOINT_COLOR{RED};
-constexpr Color LINK_COLOR{WHITE};
-constexpr float LINK_THICK{5.0f};
-constexpr Vector2 BUTTON_MID{400.0f, 600.0f};
-constexpr Vector2 SCREEN_MID{400.0f, 300.0f};
+constexpr Color KBackgroundColor{BLACK};
+constexpr int KWidth{800};
+constexpr int KHeight{600};
+constexpr float KRadius{5.0f};
+constexpr Color KJointColor{RED};
+constexpr Color KLinkColor{WHITE};
+constexpr float KLinkThick{5.0f};
+constexpr Vector2 KScreenMid{400.0f, 300.0f};
 
 struct Link {
   Vector2 origin{};
@@ -40,13 +39,13 @@ int main() {
   PrintInitInfo(arm);
 
   // Init window
-  InitWindow(WIDTH, HEIGHT, "ThirdLink Simulation");
+  InitWindow(KWidth, KHeight, "ThirdLink Simulation");
   SetTraceLogLevel(LOG_WARNING);
   SetTargetFPS(60);
 
   while (!WindowShouldClose()) {
     BeginDrawing();
-    ClearBackground(BGCOLOR);
+    ClearBackground(KBackgroundColor);
 
     // Draw thriarm
     DrawArm(arm);
@@ -73,9 +72,9 @@ void PrintInitInfo(const Arm &arm) {
 
 // Draw a pair of joint and link
 void DrawLink(const Link &link) {
-  DrawLineEx(link.origin, link.end(), LINK_THICK, LINK_COLOR);
+  DrawLineEx(link.origin, link.end(), KLinkThick, KLinkColor);
   Vector2 origin = link.origin;
-  DrawCircleV(origin, RADIUS, JOINT_COLOR);
+  DrawCircleV(origin, KRadius, KJointColor);
 }
 
 // Draw thriarms refferred to Joint0 origin
@@ -90,7 +89,7 @@ void DrawArm(const Arm &arm) {
 // Assignment JointLinkPair
 void InitArm(Arm &arm) {
   // Set initial values
-  Vector2 origin = SCREEN_MID;
+  Vector2 origin = KScreenMid;
   // assignment
   for (auto &link : arm) {
     link.origin = origin;

@@ -3,3 +3,4 @@ build/
 
 CMakeUserPresets.json
 *.log
+__cmake_systeminformation/

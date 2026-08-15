@@ -17,7 +17,7 @@ jobs:
 
       - name: Install Linux system deps (raylib/glfw 编译需要 X11)
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxkbcommon-dev libxxf86vm-dev libgl1-mesa-dev -c tools.system.package_manager:mode=install
+        run: sudo apt-get update && sudo apt-get install -y libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxkbcommon-dev libxxf86vm-dev libgl1-mesa-dev
 
       - name: Set up Python (conan 需要)
         uses: actions/setup-python@v5
@@ -34,7 +34,7 @@ jobs:
       - name: Install dependencies
         # -c ...generator=Ninja：强制单配置 generator，三平台统一生成 conan-debug preset
         # （否则 Windows 默认 Visual Studio 多配置 → 生成 conan-default，preset 名不一致）
-        run: conan install . --build=missing -s build_type=Debug -c tools.cmake.cmaketoolchain:generator=Ninja
+        run: conan install . --build=missing -s build_type=Debug -c tools.cmake.cmaketoolchain:generator=Ninja -c tools.system.package_manager:mode=install
 
       - name: Configure
         # conan install 已强制 Ninja（单配置）→ 三平台统一生成 conan-debug，无需平台分支

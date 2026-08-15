@@ -32,7 +32,7 @@ jobs:
           libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev
           libxcb-xinerama0-dev libxcb-dri3-dev uuid-dev libxcb-cursor-dev
           libxcb-dri2-0-dev libxcb-present-dev libxcb-composite0-dev
-          libxcb-ewmh-dev libxcb-res0-dev
+          libxcb-ewmh-dev libxcb-res0-dev libxcb-util-dev
 
       # Windows：设置 MSVC 环境（cl 进 PATH），否则 Ninja 找不到 cl.exe
       - name: Set up MSVC (Windows)

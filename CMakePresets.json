@@ -10,8 +10,6 @@
       "generator": "Ninja",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "RAYLIB_ROOT": "E:/Lib/raylib-6.0_win64_mingw-w64/raylib-6.0_win64_mingw-w64",
-        "CMAKE_CXX_COMPILER": "E:/Msys/mingw64/bin/g++.exe",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
     },
@@ -24,8 +22,6 @@
       "generator": "Ninja",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "RAYLIB_ROOT": "E:/Lib/raylib-6.0_win64_mingw-w64/raylib-6.0_win64_mingw-w64",
-        "CMAKE_CXX_COMPILER": "E:/Msys/mingw64/bin/g++.exe",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
     },
@@ -37,9 +33,7 @@
       "toolchainFile": "${sourceDir}/toolchains/msys-mingw64-clang.cmake",
       "generator": "Ninja",
       "cacheVariables": {
-        "CMAKE_CXX_COMPILER": "E:/Msys/mingw64/bin/clang++.exe",
         "CMAKE_BUILD_TYPE": "Debug",
-        "RAYLIB_ROOT": "E:/Lib/raylib-6.0_win64_mingw-w64/raylib-6.0_win64_mingw-w64",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
     },
@@ -51,11 +45,31 @@
       "toolchainFile": "${sourceDir}/toolchains/msys-mingw64-clang.cmake",
       "generator": "Ninja",
       "cacheVariables": {
-        "CMAKE_CXX_COMPILER": "E:/Msys/mingw64/bin/clang++.exe",
         "CMAKE_BUILD_TYPE": "Release",
-        "RAYLIB_ROOT": "E:/Lib/raylib-6.0_win64_mingw-w64/raylib-6.0_win64_mingw-w64",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "gcc-debug-build",
+      "displayName": "Build (gcc debug)",
+      "configurePreset": "gcc-debug"
+    },
+    {
+      "name": "gcc-release-build",
+      "displayName": "Build (release debug)",
+      "configurePreset": "gcc-release"
+    },
+    {
+      "name": "clang-debug-build",
+      "displayName": "Build (clang debug)",
+      "configurePreset": "clang-debug"
+    },
+    {
+      "name": "clang-release-build",
+      "displayName": "Build (clang release)",
+      "configurePreset": "clang-release"
     }
   ]
 }

@@ -4,7 +4,7 @@
 #include <numbers>
 #include <vector>
 
-constexpr Color KBackgroundColor{BLACK};
+constexpr Color KBackGroundColor{BLACK};
 constexpr int KWidth{800};
 constexpr int KHeight{600};
 constexpr float KRadius{5.0f};
@@ -45,7 +45,7 @@ int main() {
 
   while (!WindowShouldClose()) {
     BeginDrawing();
-    ClearBackground(KBackgroundColor);
+    ClearBackground(KBackGroundColor);
 
     // Draw thriarm
     DrawArm(arm);

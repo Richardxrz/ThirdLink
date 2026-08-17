@@ -244,3 +244,61 @@ Linux/macOS 上直接用 clang，没有任何这些麻烦。
 - 链条：conan install（生成 user preset）→ cmake --preset conan-debug（读取）→ 插件 :CMakeBuild 执行；
 - preset 是配置快照，插件是命令封装，两者是「生成配置」和「执行命令」的关系。
 
+
+
+## Conan 工具链管理机制（profile → toolchain → CMake）
+
+配置信息的唯一来源是 profile（~/.conan2/profiles/xxx），生成文件是派生产物，永远不改。
+
+conan_toolchain.cmake 是「翻译器」：把 profile 翻译成 CMake 的 set 语句，分 block：
+    arch_flags block  -m64                 ← profile 的 arch=x86_64
+    cppstd block      CMAKE_CXX_STANDARD 20 ← profile 的 compiler.cppstd=20
+    compilers block   空（关键！）         ← 编译器在 PATH 里就不写路径
+    find_paths block  CMAKE_PREFIX_PATH    ← conan 缓存的依赖包路径（find_package 靠它）
+
+为什么 compilers block 是空的：profile 的 [buildenv] PATH 已把 g++ 放进 PATH，
+CMake 能按名字找到，conan 就无需显式写 CMAKE_CXX_COMPILER。
+
+这就是「非硬编码」原理：路径只写在 profile 的 PATH 一处，而不是散落在 preset 里。
+
+Conan 两大职责：
+    依赖管理   [requires] raylib/glfw  → CMakeDeps 生成 raylib-config.cmake
+    工具链管理 profile（compiler/flags/PATH）→ CMakeToolchain 生成 conan_toolchain.cmake
+
+消除硬编码：删掉手写 CMakePresets 里的旧预设（CMAKE_CXX_COMPILER 硬编码），
+工具链全交给 profile——换编译器 = 改 profile + 重新 conan install。
+
+
+
+## generator 概念 + CMakeDeps / CMakeToolchain 分工
+
+generator = conan 的「生成文件」步骤：下载依赖后，生成文件给构建系统用（conan 不绑定构建系统，靠 generator 适配）。
+
+两个主力 generator 各管一半：
+    CMakeDeps      → 生成 raylib-config.cmake / raylibTargets.cmake / glfw-config.cmake
+                     解决 find_package(raylib) 去哪找：头文件、库文件、传递依赖（glfw/opengl/winmm）
+    CMakeToolchain → 生成 conan_toolchain.cmake + CMakePresets.json
+                     解决工具链：编译器、标准、flags、CMAKE_PREFIX_PATH
+
+分工对应 conan 两大职责：CMakeToolchain 管工具链（profile），CMakeDeps 管依赖（requires）。
+
+关键坑：CMakeDeps 生成的 target 名就是你要链接的名字——默认是 raylib（不带 ::），
+不是 raylib::raylib（那是 recipe 的别名，你的配置没启用就找不到）。
+
+
+
+## conanfile.txt 的 [layout]：cmake_layout 是什么
+
+layout 定义的是「conan 生成物放哪 + 构建发生在哪个目录」，不是安装位置。
+
+cmake_layout = Conan 2 内置的、为 CMake 项目设计的标准布局：
+    build/Debug/      ← 构建目录（build_type=Debug）
+    build/Debug/generators/  ← conan 生成物（toolchain/config/presets）
+    build/Release/    ← 构建目录（build_type=Release）
+
+作用：统一 conan 和 cmake 的路径约定——conan 往 build/{build_type}/generators 写，
+cmake 的 preset 指向 build/{build_type} 构建。
+
+坑：-of build 会和 cmake_layout 叠加成 build/build/Debug（之前踩过）；
+「安装（install）」是另一个概念（cmake install 装到系统），与 layout 无关。
+

@@ -20,7 +20,7 @@ int main() {
 
   while (!WindowShouldClose()) {
     BeginDrawing();
-    ClearBackground(KBackGroundColor);
+    ClearBackground(KBackgroundColor);
 
     // Draw thriarm
     DrawArm(arm);
@@ -35,7 +35,7 @@ int main() {
 /*------------------------- Print Info ------------------------*/
 
 void PrintInitInfo(const Arm &arm) {
-  for (auto &link : arm.myLinks()) {
+  for (auto &link : arm.getlinks()) {
     std::cout << "link.origin.x: " << link.origin.x << std::endl;
     std::cout << "link.origin.y: " << link.origin.y << std::endl;
     std::cout << "link.length: " << link.length << std::endl;

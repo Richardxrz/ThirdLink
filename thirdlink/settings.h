@@ -3,7 +3,7 @@
 
 #include "raylib.h"
 
-constexpr Color KBackGroundColor{BLACK};
+constexpr Color KBackgroundColor{BLACK};
 constexpr int KWidth{800};
 constexpr int KHeight{600};
 constexpr float KRadius{5.0f};

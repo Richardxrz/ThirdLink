@@ -7,8 +7,6 @@ Vector2 Link::end() const {
           origin.y - length * std::sin(angle)};
 }
 
-using Links = std::vector<Link>;
-
 Arm::Arm(Vector2 origin)
     : links{Link{{}, 100.0f, std::numbers::pi_v<float> / 5.0f},
             Link{{}, 100.0f, std::numbers::pi_v<float> * 4.0f / 5.0f},
@@ -19,4 +17,4 @@ Arm::Arm(Vector2 origin)
   }
 }
 
-const Links &Arm::myLinks(void) const { return Arm::links; };
+const Links &Arm::getlinks() const { return Arm::links; };

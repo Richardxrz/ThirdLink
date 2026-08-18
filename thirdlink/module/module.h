@@ -1,7 +1,10 @@
-#ifndef MODULES_H
-#define MODULES_H
-#include "raylib.h"
+#ifndef MODULE_H
+#define MODULE_H
 #include <vector>
+struct Vector2 {
+  float x;
+  float y;
+};
 
 struct Link {
   Vector2 origin{};
@@ -17,7 +20,7 @@ class Arm {
 public:
   Arm(Vector2 origin);
 
-  const Links &myLinks(void) const;
+  const Links &getlinks() const;
 
 private:
   std::vector<Link> links;

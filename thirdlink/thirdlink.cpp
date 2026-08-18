@@ -4,15 +4,13 @@
 #include "settings.h"
 #include <iostream>
 
-void DrawArm(const Arm &arm);
 void PrintInitInfo(const Arm &arm);
 
 int main() {
   // Init arm
   Arm arm(KScreenMid);
-  // Arm arm{Link{{}, 100.0f, std::numbers::pi_v<float> / 5.0f},
-  //         Link{{}, 100.0f, std::numbers::pi_v<float> * 4.0f / 5.0f},
-  //         Link{{}, 45.0f, std::numbers::pi_v<float>}};
+
+  // Print arm init info
   PrintInitInfo(arm);
 
   // Init window
@@ -42,21 +40,5 @@ void PrintInitInfo(const Arm &arm) {
     std::cout << "link.origin.y: " << link.origin.y << std::endl;
     std::cout << "link.length: " << link.length << std::endl;
     std::cout << "link.angle: " << link.angle << std::endl;
-  }
-}
-
-/*-------------------------- Draw -----------------------------*/
-
-// Draw a pair of joint and link
-void DrawLink(const Link &link) {
-  DrawLineEx(link.origin, link.end(), KLinkThick, KLinkColor);
-  Vector2 origin = link.origin;
-  DrawCircleV(origin, KRadius, KJointColor);
-}
-
-// Draw thriarms refferred to Joint0 origin
-void DrawArm(const Arm &arm) {
-  for (const Link &link : arm.myLinks()) {
-    DrawLink(link);
   }
 }

@@ -16,6 +16,7 @@ Arm::Arm(Vector2 origin)
   for (Link &link : links) {
     link.origin = origin;
     origin = link.end();
+    end = links.back().end();
   }
 }
 
@@ -27,8 +28,8 @@ void Arm::rotateLink90(int x) {
 };
 
 void Arm::update() {
-  for (int i = 1; i < 3; i++) {
+  for (int i = 1; i < links.size(); i++) {
     Arm::links[i].origin = Arm::links[i - 1].end();
   }
-  Arm::end = links[2].end();
+  Arm::end = links[links.size() - 1].end();
 }

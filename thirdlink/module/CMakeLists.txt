@@ -7,7 +7,3 @@ target_sources(module
     FILES
       module.h
 )
-target_link_libraries(module
-  PRIVATE
-    raylib
-)

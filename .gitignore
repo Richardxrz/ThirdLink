@@ -4,3 +4,11 @@ build/
 CMakeUserPresets.json
 *.log
 __cmake_systeminformation/
+__pycache__/
+.idea/
+*.o
+*.elf
+*.bin
+*.hex
+*.pdb
+
